@@ -2,14 +2,9 @@
 
 // console.log(window.GitgraphJS);
 
-function messageClick(event) {
-    // Code to execute when the click event occurs
-    console.log('message clicked!', event);
-}
-
-function dotClick(event) {
-    // Code to execute when the click event occurs
-    console.log('dot clicked!', event);
+function showDetail(_commit) {
+    _commit.showDetail = !_commit.showDetail;
+    gitgraph.refresh();
 }
 
 var myTemplateConfig = {
@@ -64,7 +59,7 @@ const gitgraph = GitgraphJS.createGitgraph(graphContainer, {
     orientation: "vertical",
     elementId: 'graph',
     mode: "extended", // or compact if you don't want the messages
-    template: simpleTemplate
+    template: simpleTemplate,
 });
 
 // var onMouseOver = action('mouse over dot');
@@ -72,9 +67,6 @@ const gitgraph = GitgraphJS.createGitgraph(graphContainer, {
 const career = gitgraph.branch("career");
 career.commit({
     subject: "Init career",
-    //   date: new Date("2023-06-01"),
-    //   body: 'This is to explain the rationale behind this commit.',
-    //   onMouseOver: onMouseOver
 });
 
 const education = career.branch("education");
@@ -145,16 +137,16 @@ projects.commit({
 projects.commit({
     subject: "Drone",
     body: "Indoor drone navigation",
-    onClick: dotClick,
+    detail: "<p style=\"color:red\">red html</p>",
+    onMessageClick: showDetail,
 });
 
 career.commit({
     subject: "Brightpick",
     tag: "02/2022 - present",
-    // body: "Senior Software Developer",
-
-    // body: "",
-    onMessageClick: messageClick,
+    body: "Senior Software Developer",
+    detail: "<b>some detail</b>",
+    onMessageClick: showDetail,
 });
 
 // career.merge(education, "Successfully defended my dissertation thesis");

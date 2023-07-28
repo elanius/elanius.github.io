@@ -465,6 +465,8 @@
 	        // Set commit message
 	        this.subject = options.subject;
 	        this.body = options.body || "";
+			this.detail = options.detail || "";
+			this.showDetail = options.showDetail || false;
 	        // Set commit hash
 	        this.hash = options.hash || getRandomHash();
 	        this.hashAbbrev = this.hash.substring(0, 7);
@@ -546,6 +548,8 @@
 	            subject: this.subject,
 	            style: this.style,
 	            body: this.body,
+				detail: this.detail,
+				showDetail: this.showDetail,
 	            hash: this.hash,
 	            parents: this.parents,
 	            dotText: this.dotText,
@@ -1319,6 +1323,10 @@
 	        this._onGraphUpdate();
 	        return this;
 	    }
+		refresh() {
+			this._onGraphUpdate();
+			return this;
+		}
 	    commit(options) {
 	        this._graph.currentBranch.getUserApi().commit(options);
 	        return this;
@@ -1504,9 +1512,9 @@
 	        this.initCommitOffsetX = utils.numberOptionOr(options.initCommitOffsetX, 0);
 	        this.initCommitOffsetY = utils.numberOptionOr(options.initCommitOffsetY, 0);
 	        this.mode = options.mode;
-	        this.author = options.author || "Sergio Flores <saxo-guy@epic.com>";
+	        this.author = options.author || "Stanislav Alexovic <stanislav.alexovic@gmail.com>";
 	        this.commitMessage =
-	            options.commitMessage || "He doesn't like George Michael! Boooo!";
+	            options.commitMessage || "commit message";
 	        this.generateCommitHash =
 	            typeof options.generateCommitHash === "function"
 	                ? options.generateCommitHash
@@ -1960,6 +1968,20 @@
 	    result.appendChild(p);
 	    return result;
 	}
+	function createHtmlArea(options) {
+	    var result = document.createElementNS(SVG_NAMESPACE, "foreignObject");
+	    result.setAttribute("width", options.width.toString());
+	    result.setAttribute("height", options.height.toString());
+	    if (options.translate) {
+	        result.setAttribute("x", options.translate.x.toString());
+	        result.setAttribute("y", options.translate.y.toString());
+	    }
+	    var div = document.createElement("div");
+		div.className = "commit-detail-div";
+	    div.innerHTML = options.content;
+	    result.appendChild(div);
+	    return result;
+	}
 
 	var PADDING_X = 10;
 	var PADDING_Y = 5;
@@ -2122,6 +2144,7 @@
 	    var gitgraph = new lib_1(options);
 	    gitgraph.subscribe(function (data) {
 	        shouldRecomputeOffsets = true;
+			commitYWithOffsets = {};
 	        render(data);
 	    });
 	    // Return usable API for end-user.
@@ -2171,12 +2194,15 @@
 	                : commits.reverse();
 	            commitYWithOffsets = orientedCommits.reduce(function (newOffsets, commit) {
 	                var commitY = parseInt(commit.getAttribute("transform").split(",")[1].slice(0, -1), 10);
-	                var firstForeignObject = commit.getElementsByTagName("foreignObject")[0];
-	                var customHtmlMessage = firstForeignObject && firstForeignObject.firstElementChild;
 	                newOffsets[commitY] = commitY + totalOffsetY;
-	                // Increment total offset after setting the offset
-	                // => offset next commits accordingly.
-	                totalOffsetY += getMessageHeight(customHtmlMessage);
+					var foreignObjects = commit.getElementsByTagName("foreignObject");
+					for (let i = 0; i < foreignObjects.length; i++) {
+						var foreignObject = foreignObjects[i];
+						var customHtmlMessage = foreignObject && foreignObject.firstElementChild;
+						// Increment total offset after setting the offset
+						// => offset next commits accordingly.
+						totalOffsetY += getMessageHeight(customHtmlMessage);
+					}
 	                return newOffsets;
 	            }, {});
 	        }
@@ -2189,7 +2215,7 @@
 	            // Ensure commits elements (branch labels, message…) are well positionned.
 	            // It can't be done at render time since elements size is dynamic.
 	            Object.keys(commitsElements).forEach(function (commitHash) {
-	                var _a = commitsElements[commitHash], branchLabel = _a.branchLabel, tags = _a.tags, message = _a.message;
+	                var _a = commitsElements[commitHash], branchLabel = _a.branchLabel, tags = _a.tags, message = _a.message, detail = _a.detail;
 	                // We'll store X position progressively and translate elements.
 	                var x = commitMessagesX;
 	                if (branchLabel) {
@@ -2279,7 +2305,7 @@
 	                        translate: { x: -x, y: 0 },
 	                        children: [
 	                            renderMessage(commit)
-	                        ].concat(renderBranchLabels(commit), renderTags(commit)),
+	                        ].concat(renderBranchLabels(commit), renderTags(commit), renderDetail(commit)),
 	                    }),
 	                ]),
 	            });
@@ -2411,6 +2437,24 @@
 	            return branchLabelContainer;
 	        });
 	    }
+		function renderDetail(commit) {
+			if (!commit.detail || !commit.showDetail)
+				return [];
+			if (gitgraph.isHorizontal)
+	            return [];
+			var detail_content = createHtmlArea({
+				width: 800,
+				height: 200,
+				translate: { x: 0, y: 30 },
+				content: commit.detail,
+			});
+			var detail = createG({
+				translate: { x: 90, y: 10 },
+				children: [detail_content],
+			});
+			setDetailRef(commit, detail);
+			return detail;
+		}
 	    function renderTags(commit) {
 	        if (!commit.tags)
 	            return [];
@@ -2421,7 +2465,7 @@
 	                ? tag.render(tag.name, tag.style)
 	                : createTag(tag);
 	            var tagContainer = createG({
-	                translate: { x: 0, y: commit.style.dot.size },
+	                translate: { x: 0, y: commit.style.dot.size + 5 },
 	                children: [tagElement],
 	            });
 	            // `data-offset` is used to position tag element in `positionCommitsElements`.
@@ -2526,6 +2570,12 @@
 	        }
 	        commitsElements[commit.hashAbbrev].message = message;
 	    }
+		function setDetailRef(commit, detail) {
+	        if (!commitsElements[commit.hashAbbrev]) {
+	            initCommitElements(commit);
+	        }
+	        commitsElements[commit.hashAbbrev].detail = detail;
+	    }
 	    function setTagRef(commit, tag) {
 	        if (!commitsElements[commit.hashAbbrev]) {
 	            initCommitElements(commit);
@@ -2537,6 +2587,7 @@
 	            branchLabel: null,
 	            tags: [],
 	            message: null,
+				detail: null,
 	        };
 	    }
 	}
