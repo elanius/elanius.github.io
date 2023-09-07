@@ -1921,6 +1921,18 @@
 	    if (options.stroke) {
 	        rect.setAttribute("stroke", options.stroke);
 	    }
+		if (options.translate) {
+	        rect.setAttribute("transform", "translate(" + options.translate.x + ", " + options.translate.y + ")");
+	    }
+	    if (options.onMouseOver) {
+	        rect.addEventListener("mouseover", options.onMouseOver);
+	    }
+	    if (options.onMouseOut) {
+	        rect.addEventListener("mouseout", options.onMouseOut);
+	    }
+		if (options.transparency) {
+			rect.setAttribute("fill-opacity", options.transparency);
+		}
 	    return rect;
 	}
 	function createPath(options) {
@@ -2301,12 +2313,18 @@
 	                children: [
 	                    renderDot(commit)
 	                ].concat(renderArrows(commit), [
-	                    createG({
-	                        translate: { x: -x, y: 0 },
-	                        children: [
-	                            renderMessage(commit)
-	                        ].concat(renderBranchLabels(commit), renderTags(commit), renderDetail(commit)),
-	                    }),
+						createG({
+							translate: { x: 0, y: 0 },
+	                		children: [
+								createG({
+									onClick: commit.onMessageClick,
+									translate: { x: -x, y: 0 },
+									children: [
+										renderMessage(commit)
+									].concat(renderBranchLabels(commit), renderTags(commit), renderHower(commit)),
+								}),
+							].concat(renderDetail(commit)),
+						}),
 	                ]),
 	            });
 	        }
@@ -2337,6 +2355,29 @@
 	            });
 	        }
 	    }
+		function renderHower(commit) {
+			var howerArea = createRect({
+				translate: { x: 85, y: -5 },
+				width: 700,
+				height: 45,
+				borderRadius: 5,
+				fill: "white",
+				transparency: "0",
+				onMouseOver: function(e) {
+					e.currentTarget.setAttribute("fill", "gray");
+					e.currentTarget.setAttribute("fill-opacity", "0.1");
+					console.log("mouse in");
+				},
+				onMouseOut: function(e) {
+					e.currentTarget.setAttribute("fill", "white");
+					e.currentTarget.setAttribute("fill-opacity", "0");
+
+					console.log("mouse out");
+				},
+			});
+
+			return howerArea;
+		}
 	    function renderMessage(commit) {
 	        if (!commit.style.message.display) {
 	            return null;
@@ -2355,7 +2396,7 @@
 	            content: commit.message,
 	            fill: commit.style.message.color || "",
 	            font: commit.style.message.font,
-	            onClick: commit.onMessageClick,
+	            // onClick: commit.onMessageClick,
 	        });
 	        message = createG({
 	            translate: { x: 0, y: commit.style.dot.size },
@@ -2443,13 +2484,13 @@
 			if (gitgraph.isHorizontal)
 	            return [];
 			var detail_content = createHtmlArea({
-				width: 800,
+				width: 700,
 				height: 200,
-				translate: { x: 0, y: 30 },
+				translate: { x: 0, y: 0 },
 				content: commit.detail,
 			});
 			var detail = createG({
-				translate: { x: 90, y: 10 },
+				translate: { x: 85 - commit.x, y: 40 },
 				children: [detail_content],
 			});
 			setDetailRef(commit, detail);
