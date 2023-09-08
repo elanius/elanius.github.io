@@ -1988,10 +1988,19 @@
 	        result.setAttribute("x", options.translate.x.toString());
 	        result.setAttribute("y", options.translate.y.toString());
 	    }
-	    var div = document.createElement("div");
-		div.className = "commit-detail-div";
-	    div.innerHTML = options.content;
-	    result.appendChild(div);
+
+		if (options.content.endsWith(".html")) {
+			var iframe = document.createElement("iframe");
+			iframe.className = "commit-detail-div";
+			iframe.setAttribute("src", "/assets/details/" + options.content);
+			result.appendChild(iframe);
+		}
+		else {
+			var div = document.createElement("div");
+			div.className = "commit-detail-div";
+			div.innerHTML = options.content;
+			result.appendChild(div);
+		}
 	    return result;
 	}
 
@@ -2366,13 +2375,10 @@
 				onMouseOver: function(e) {
 					e.currentTarget.setAttribute("fill", "gray");
 					e.currentTarget.setAttribute("fill-opacity", "0.1");
-					console.log("mouse in");
 				},
 				onMouseOut: function(e) {
 					e.currentTarget.setAttribute("fill", "white");
 					e.currentTarget.setAttribute("fill-opacity", "0");
-
-					console.log("mouse out");
 				},
 			});
 
