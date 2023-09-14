@@ -485,6 +485,18 @@
 	        this.renderDot = options.renderDot;
 	        this.renderMessage = options.renderMessage;
 	        this.renderTooltip = options.renderTooltip;
+
+			if (this.detail.endsWith(".html")) {
+				var xhr = typeof XMLHttpRequest != 'undefined' ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+				xhr.open('get', '/assets/details/' + options.detail, true);
+				xhr.onreadystatechange = () => {
+					if (xhr.readyState == 4 && xhr.status == 200) {
+						this.detail = xhr.responseText;
+					}
+				}
+				xhr.send();
+			}
+
 	    }
 	    /**
 	     * Message
@@ -1990,14 +2002,17 @@
 	    }
 
 		if (options.content.endsWith(".html")) {
-			var iframe = document.createElement("iframe");
-			iframe.className = "commit-detail-div";
-			iframe.setAttribute("src", "/assets/details/" + options.content);
-			result.appendChild(iframe);
+			var div = document.createElement("div");
+			// div.setAttribute("id", "commit-detail-html");
+			div.className = "commit-detail-container";
+			// var iframe = document.createElement("iframe");
+			// iframe.className = "commit-detail-container";
+			// iframe.setAttribute("src", "/assets/details/" + options.content);
+			result.appendChild(div);
 		}
 		else {
 			var div = document.createElement("div");
-			div.className = "commit-detail-div";
+			div.className = "commit-detail-container";
 			div.innerHTML = options.content;
 			result.appendChild(div);
 		}
@@ -2373,12 +2388,16 @@
 				fill: "white",
 				transparency: "0",
 				onMouseOver: function(e) {
-					e.currentTarget.setAttribute("fill", "gray");
-					e.currentTarget.setAttribute("fill-opacity", "0.1");
+					if (commit.detail) {
+						e.currentTarget.setAttribute("fill", "gray");
+						e.currentTarget.setAttribute("fill-opacity", "0.1");
+					}
 				},
 				onMouseOut: function(e) {
-					e.currentTarget.setAttribute("fill", "white");
-					e.currentTarget.setAttribute("fill-opacity", "0");
+					if (commit.detail) {
+						e.currentTarget.setAttribute("fill", "white");
+						e.currentTarget.setAttribute("fill-opacity", "0");
+					}
 				},
 			});
 

@@ -75,27 +75,35 @@ const projects = career.branch("projects");
 education.commit({
     subject: "Secondary Industrial School of Electrical Engineering",
     tag: "09/1999 - 06/2003 (4 yrs)",
-    body: "Emulator 8051, ",
+    body: "Electrical Engineering and Computer Science",
+    detail: "spse.html",
+    onMessageClick: showDetail,
 });
 
 career.merge(education, "Successfully graduated");
 
 education.commit({
-    subject: "Technical University of Kosice",
+    subject: "Technical University of Kosice - MS",
     tag: "09/2003 - 05/2008 (5 yrs)",
-    body: "Computer science, openGL",
+    body: "Computer Science and Informatics",
+    detail: "tuke-ing.html",
+    onMessageClick: showDetail,
 });
 
 career.commit({
-    subject: "BLUEMONT SOFTWARE",
+    subject: "Bluemont Software",
     tag: "02/2006 - 10/2006 (8 mos)",
-    body: "Software Developer"
+    body: "Software Developer",
+    detail: "bluemont.html",
+    onMessageClick: showDetail,
 });
 
 career.commit({
     subject: "ecce",
     tag: "10/2007 - 06/2008 (8 mos)",
     body: "Software Developer",
+    detail: "ecce.html",
+    onMessageClick: showDetail,
 });
 
 career.merge(education, "Master's degree in Computer Science");
@@ -104,49 +112,60 @@ career.commit({
     subject: "ESET",
     tag: "09/2008 - 10/2018 (10 yrs)",
     body: "Software Developer",
+    detail: "eset.html",
+    onMessageClick: showDetail,
 });
 
 projects.commit({
     subject: "Building a house",
-    // body: "Indoor drone navigation",
+    detail: "house.html",
+    onMessageClick: showDetail,
 });
 
 career.commit({
     subject: "ComAp",
     tag: "10/2018 - 10/2019 (1 yr)",
     body: "Embedded Software Developer",
+    detail: "comap.html",
+    onMessageClick: showDetail,
 });
 
 career.commit({
     subject: "Photoneo",
     tag: "10/2019 - 02/2022 (2 yrs 5 mos)",
     body: "Senior Software Developer",
+    detail: "photoneo.html",
+    onMessageClick: showDetail,
 });
 
 education.commit({
     subject: "Technical University of Kosice - PhD",
     tag: "09/2020 - 08/2023 (3 yrs)",
-    body: "Autonomous drone",
+    body: "Electrical engineering",
+    detail: "tuke-phd.html",
+    onMessageClick: showDetail,
 });
 
 projects.commit({
     subject: "Fleet simulation",
     body: "ROS fleet simulation for AMRs",
+    detail: "fleet-sim.html",
+    onMessageClick: showDetail,
 });
 
 projects.commit({
     subject: "Drone",
-    body: "Indoor drone navigation",
-    detail: "<p style=\"color:red\">red html</p>",
+    body: "Indoor Mapping and Navigation with UAV",
+    detail: "drone.html",
     onMessageClick: showDetail,
 });
+
+career.merge(education, "Successfully defended my dissertation thesis");
 
 career.commit({
     subject: "Brightpick",
     tag: "02/2022 - present",
     body: "Senior Software Developer",
-    detail: "<b>some detail</b>",
+    detail: "brightpick.html",
     onMessageClick: showDetail,
 });
-
-// career.merge(education, "Successfully defended my dissertation thesis");

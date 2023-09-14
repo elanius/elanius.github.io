@@ -4,13 +4,18 @@
 @import '{{ site.theme }}';
 
 /* append your custom style below */
-.commit-detail-div {
+.commit-detail-container {
     width: 700px;
     height: 200px;
-    background-color: rgb(213, 239, 250);
+    background-color: rgb(237, 253, 255);
+    border-radius: 5px;
     padding: 10px;
-    font-family: Arial, sans-serif;
-    font-size: 16px;
-    text-align: center;
-    // border-radius: 10px;
+    line-height: normal;
+    overflow-x: hidden;
+    overflow-y: auto;
+    text-align: justify;
 }
+
+.tech-stack {
+    font-style: italic;
+ }
