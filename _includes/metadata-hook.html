@@ -1,1 +1,13 @@
 <!-- A placeholder to allow defining custom metadata -->
+
+{% if page.custom_js %}
+{% for js_file in page.custom_js %}
+<script type="module" src="{{ site.baseurl }}/assets/js/{{ js_file }}.js"></script>
+{% endfor %}
+{% endif %}
+
+{% if page.custom_css %}
+{% for css_file in page.custom_css %}
+<link rel="stylesheet" href="{{ site.baseurl }}/assets/css/{{ css_file }}.css">
+{% endfor %}
+{% endif %}
