@@ -1,6 +1,4 @@
-// import { Template } from './gitgraph.js';
-
-// console.log(window.GitgraphJS);
+// import { refreshFsLightbox } from "./fslightbox.js";
 
 function showDetail(_commit) {
     _commit.showDetail = !_commit.showDetail;
@@ -148,7 +146,7 @@ education.commit({
 
 projects.commit({
     subject: "Fleet simulation",
-    body: "ROS fleet simulation for AMRs",
+    body: "ROS fleet simulation for multiple AMRs",
     detail: "fleet-sim.html",
     onMessageClick: showDetail,
 });

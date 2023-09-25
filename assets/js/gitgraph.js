@@ -2013,7 +2013,8 @@
 		else {
 			var div = document.createElement("div");
 			div.className = "commit-detail-container";
-			div.innerHTML = options.content;
+			div.insertAdjacentHTML("afterbegin", options.content);
+			// div.innerHTML = options.content;
 			result.appendChild(div);
 		}
 	    return result;
@@ -2202,6 +2203,7 @@
 	            translate: { x: PADDING_X, y: PADDING },
 	            children: [renderBranchesPaths(branchesPaths), $commits],
 	        }));
+			refreshFsLightbox();
 	    }
 	    function adaptSvgOnUpdate(adaptToContainer) {
 	        var observer = new MutationObserver(function () {
