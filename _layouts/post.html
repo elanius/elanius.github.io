@@ -87,6 +87,21 @@ tail_includes:
 
   </div> <!-- .d-flex -->
 
+  <div class="d-flex justify-content-between">
+    <!-- link to source code -->
+    <span>
+      {% if page.project_link %}
+        Project code
+        <em>
+          <a href="{{ page.project_link }}">
+            {{ page.project_link | split: '/' | last }}
+          </a>
+        </em>
+      {% endif %}
+    </span>
+  </div>
+
+
 </div> <!-- .post-meta -->
 
 <div class="post-content">
