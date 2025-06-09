@@ -162,8 +162,23 @@ career.merge(education, "Successfully defended my dissertation thesis");
 
 career.commit({
     subject: "Brightpick",
-    tag: "02/2022 - present",
+    tag: "02/2022 - 01/2024 (1 yr 11 mos)",
     body: "Senior Software Developer",
     detail: "brightpick.html",
+    onMessageClick: showDetail,
+});
+
+projects.commit({
+    subject: "GAOF Weather Service",
+    body: "Weather zones for drone operations",
+    detail: "gaof.html",
+    onMessageClick: showDetail,
+});
+
+career.commit({
+    subject: "AT&T",
+    tag: "01/2024 - present",
+    body: "Senior Full Stack Development Engineer",
+    detail: "ATT.html",
     onMessageClick: showDetail,
 });

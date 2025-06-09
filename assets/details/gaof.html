@@ -1,0 +1,22 @@
+<p>
+    GAOF stands for Geocast Air Operation Framework. It provides communication, autonomy, and information services for
+    drone operations.
+    This project was developed with the support of AT&T, and I became a voluntary member of the GAOF team.
+</p>
+<p>
+    My main responsibility was to develop a <a href="https://github.com/elanius/GAOF-weather" target="_blank">weather
+    service</a> that delivers weather information for drone operations.
+    The service was implemented in Python (using FastAPI) and utilized the OpenWeather API to fetch weather data. It
+    generated weather zones based on areas of interest—typically locations where drones were intended to fly.
+    Zones were defined by type (e.g., wind, rain, temperature), threshold setpoint, and resolution size. For improved
+    visualization, the service created a pixel map where each pixel represented a zone that had reached its setpoint.
+</p>
+<p>
+    Another part of the project involved developing a visualization tool to display the weather zones on a map. It also
+    supported basic zone operations such as creating, updating, deleting, and retrieving zones. The tool was built in
+    TypeScript using React and Leaflet.js for map rendering.
+</p>
+<p>
+    Unfortunately, the project was discontinued prematurely due to a strategic decision by AT&T management.
+</p>
+<p class="tech-stack"><b>Tech stack:</b> Python, FastAPI, Docker, TypeScript, React</p>
