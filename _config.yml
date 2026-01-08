@@ -31,8 +31,8 @@ url: "https://elanius.github.io"
 github:
   username: elanius # change to your github username
 
-twitter:
-  username: elanius0 # change to your twitter username
+# twitter:
+#   username: elanius0 # change to your twitter username
 
 social:
   # Change to your full name.
@@ -41,9 +41,9 @@ social:
   email: stanislav.alexovic@gmail.com # change to your email address
   links:
     # The first element serves as the copyright owner's link
-    - https://twitter.com/elanius0
+    # - https://twitter.com/elanius0
     - https://github.com/elanius
-    - https://www.linkedin.com/in/stanislav-alexovic-7956a6136/
+    # - https://www.linkedin.com/in/stanislav-alexovic-7956a6136/
 
 google_site_verification: # fill in to your verification string
 
