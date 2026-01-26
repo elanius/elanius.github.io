@@ -24,3 +24,18 @@
 //     padding: 5px;
 //     text-align: center;
 //  }
+
+.screenshot-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 1.5rem;
+}
+
+.screenshot-row .shot {
+  text-align: center;
+}
+
+.screenshot-row img {
+  border-radius: 4px;
+}

@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Robot fleet simulation"
+title:  "Robot Fleet Simulation"
 project_link: https://github.com/elanius/fleet-sim
 categories: [Robotics,  fleet simulator]
 tags: ROS Docker fleet AMR Gazebo
@@ -49,9 +49,13 @@ Managing the Gazebo simulation server globally is arguably the most challenging 
 
 The critical aspect is establishing communication between each robot and the Gazebo simulation server. Typically, a robot is spawned in Gazebo using a `.launch` file where the **spawn_model** node from the **gazebo_ros** package is initiates. This node, taking URDF or SDF models as input, spawns them in the 3D environment. By default, this node communicates with the Gazebo server at the default IP address `http://localhost:11347`, but this default address can be altered with the *GAZEBO_MASTER_URI* environment variable to redirect to the Gazebo simulation server.
 
-Redirecting communication from the Gazebo server back to each robot's backend is more complex. When a model is spawned, it automatically loads plugins defined in the robot's URDF model. These plugins have access to the Gazebo API and can interact with the Gazebo world or model as needed. Additionally, they create a ROS node handle, enabling communication with ros_master to publish, subscribe, or call services. The challenge is redirecting these plugins to communicate with a specific ros_master rather than the default one at `http://localhost:11311`, typically set by the *ROS_MASTER_URI* environment variable. Changing this in the Gazebo Docker container impacts all robots/plugins, so a solution specific to each plugin is required, possibly necessitating code modifications.
+Redirecting communication from the Gazebo server back to each robot’s backend is more complex. When a model is spawned, it automatically loads plugins defined in the robot’s URDF model. These plugins have access to the Gazebo API and can interact with the Gazebo world or model as needed. Additionally, they create a ROS node handle, enabling communication with **ros_master** to publish, subscribe, or call services.
 
-Another approach worth considering involves utilizing the Gazebo communication layer on the ROS side. This means directly connecting to Gazebo topics, either the default ones or those advertised by Gazebo plugins. Adopting this method would eliminate the need for ROS libraries on the Gazebo side. However, it would require the inclusion of Gazebo transport layer libraries in my nodes to enable subscribing to or publishing on these topics. While this approach works similarly to ROS, a key difference is that Gazebo employs ProtoBuff messages for its message passing mechanism.
+In theory, each plugin would need to connect to a different ros_master instance, corresponding to the robot it belongs to. In practice, this is not possible because ROS uses a **global singleton node handle**, which means a single process (in this case, the Gazebo server) cannot maintain multiple connections to different ros_master instances with different `ROS_MASTER_URI` values. Changing the ROS master URI inside the Gazebo container would therefore affect all loaded plugins, making per-robot routing impossible. For this reason, modifying plugins to talk to different ros_master instances is not a viable solution.
+
+As a result, communication between robots and the simulation must bypass ROS on the Gazebo side entirely. Instead, the robot backends connect directly to Gazebo using its native **transport layer**, subscribing to and publishing on Gazebo topics (either default ones or those advertised by Gazebo plugins). This approach keeps Gazebo as a pure simulation server and avoids the limitations imposed by ROS’s global state.
+
+Using Gazebo transport requires including Gazebo transport libraries in the robot containers and working with Gazebo messages, which are based on Protocol Buffers rather than ROS messages. While this adds a small integration overhead, the communication model remains conceptually similar to ROS pub/sub and scales cleanly with multiple robots, each running its own independent ros_master.
 
 ## Conclusion
 The accompanying diagram illustrates the proposed architecture from the perspective of containers and processes. It depicts how the Docker network interconnects the containers for Robot A and Robot B, each with its own ros_master, navigation stack nodes, and rosbridge node, to the central Gazebo simulator container that houses the Gazebo server and client GUI. This setup ensures that source code and binaries are consistently shared and mounted across robot containers, while the Gazebo simulator manages the simulation environment.

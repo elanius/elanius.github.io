@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Development environment for fleet"
+title:  "Development Environment for Fleet"
 project_link: https://github.com/elanius/fleet-sim
 categories: [Robotics,  fleet simulator]
 tags: ROS Docker fleet AMR Gazebo vscode
