@@ -24,7 +24,7 @@ Senior software engineer with 18 years of experience in software development, sp
 
 ## Experience
 _Below is a Git graph–style timeline highlighting my education, key milestones, and selected projects. <br>
-A concise PDF resume is available [here](/assets/resume-alexovic.pdf "resume.pdf")._
+A concise PDF resume is available [here](/assets/resume-alexovic.pdf "resume.pdf"){:target="_blank"}._
 
 <!-- DOM element in which we'll mount our graph -->
 <div id="graph-container"></div>
