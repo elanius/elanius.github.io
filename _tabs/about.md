@@ -4,10 +4,12 @@ icon: fas fa-info-circle
 order: 4
 ---
 
-Welcome to my personal blog! I'm Stanislav, a father of three amazing kids and a loving husband. I have a strong passion for creating and building things with my own hands, whether it's a DIY project around the house or a creative endeavor in my workshop. Nature holds a special place in my heart, and I find solace and inspiration in its beauty and serenity.
+I'm Stanislav, a software developer with a passion for building, exploring, and family life. Here's a bit about me:
 
-Professionally, I am a software developer with a focus on C++ and Python. I am constantly striving to enhance my skills and explore new avenues in the fascinating world of programming. Additionally, I have a keen interest in the field of robotics, where I love combining my programming knowledge with my love for building and creating.
+- Devoted husband and father of three wonderful children
+- Active member of my local church community, where I help organize family gatherings and summer camps for kids
+- Adventure enthusiast who thrives on mountain hiking, exploring new areas, and swimming
+- Hands-on creator who loves wood crafting and DIY projects to bring ideas to life
+- Professional backend developer with extensive experience in C++ and Python, plus a strong interest in robotics
 
-Through this blog, I aim to share my experiences, insights, and learnings as I navigate the realms of software development, DIY projects, and my adventures in robotics. Thank you for visiting!
-
-![profile photo](/assets/image/cover.jpg)
+For a detailed overview of my professional skills and experience, please visit my [career](/story) page.
